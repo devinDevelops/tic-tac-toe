@@ -27,18 +27,19 @@ const Gameboard = (function () {
     return getCurrentPlayer();
   };
 
-  const updateGbArr = el => {
-    const indexOfgbCellEvent = GameboardDisplay.gbCellElsArr.indexOf(el);
+  const updateGbArr = (el, gbCellElsArr) => {
+    const indexOfgbCellEvent = gbCellElsArr.indexOf(el);
     return (gbArr[indexOfgbCellEvent] = getCurrentPlayer().symbol);
   };
 
   const checkForWinner = () => {
-    const diaginalSquares = null;
+    // const diaginalSquares = null;
     // console.log(`diagSqs: ${diaginalSquares}`);
     // const horizontalSquares = null;
     // console.log(`horiSqs: ${horizontalSquares}`);
     // const verticalSquares = null;
     // console.log(`vertSqs: ${verticalSquares});
+    console.log(gbArr);
   };
 
   return {
@@ -51,6 +52,7 @@ const Gameboard = (function () {
 
 const GameboardDisplay = (function () {
   const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
+  const gbCellElsArr = [...gameboardCellEls];
 
   const addListeners = () => {
     gameboardCellEls.forEach(el => {
@@ -58,10 +60,9 @@ const GameboardDisplay = (function () {
         'click',
         () => {
           appendSymbol(el);
-          Gameboard.updateGbArr(el);
+          Gameboard.updateGbArr(el, gbCellElsArr);
+          Gameboard.checkForWinner();
           Gameboard.changeCurrentPlayer();
-
-          // Gameboard.checkForWinner();
         },
         {
           once: true,
