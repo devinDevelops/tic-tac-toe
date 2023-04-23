@@ -1,28 +1,44 @@
 const Gameboard = (function () {
-  const player1 = CreatePlayer('player1', 'X');
-  const player2 = CreatePlayer('player2', 'O');
-  let currentPlayer;
+  const player1 = CreatePlayer('player1', 'X', true);
+  const player2 = CreatePlayer('player2', 'O', false);
+
   let gbArr = [];
 
-  function CreatePlayer(name, symbol) {
+  function CreatePlayer(name, symbol, isCurrentPlayer) {
     return {
       name,
       symbol,
+      isCurrentPlayer,
     };
   }
 
-  function changeCurrentPlayer() {
-    currentPlayer === player1
-      ? (currentPlayer = player2)
-      : (currentPlayer = player1);
-    return currentPlayer;
-  }
+  const getCurrentPlayer = () => {
+    return player1.isCurrentPlayer ? player1 : player2;
+  };
+
+  const changeCurrentPlayer = () => {
+    if (player1.isCurrentPlayer) {
+      player1.isCurrentPlayer = false;
+      player2.isCurrentPlayer = true;
+    } else {
+      player2.isCurrentPlayer = false;
+      player1.isCurrentPlayer = true;
+    }
+    return getCurrentPlayer();
+  };
 
   const updateGbArr = () => {};
 
-  function checkForWinner() {}
+  const checkForWinner = () => {
+    const diaginalSquares = null;
+    // console.log(`diagSqs: ${diaginalSquares}`);
+    // const horizontalSquares = null;
+    // console.log(`horiSqs: ${horizontalSquares}`);
+    // const verticalSquares = null;
+    // console.log(`vertSqs: ${verticalSquares});
+  };
 
-  return { currentPlayer, changeCurrentPlayer };
+  return { getCurrentPlayer, changeCurrentPlayer, checkForWinner, updateGbArr };
 })();
 
 const GameboardDisplay = (function () {
@@ -30,14 +46,23 @@ const GameboardDisplay = (function () {
 
   const addListeners = () => {
     gameboardCellEls.forEach(el => {
-      return el.addEventListener('click', () => appendSymbol(el), {
-        once: true,
-      });
+      return el.addEventListener(
+        'click',
+        () => {
+          appendSymbol(el);
+          Gameboard.changeCurrentPlayer();
+          // Gameboard.checkForWinner();
+          // Gameboard.updateGbArr();
+        },
+        {
+          once: true,
+        }
+      );
     });
   };
 
   const appendSymbol = el => {
-    return el.appendChild(createSymbol(Gameboard.changeCurrentPlayer()));
+    return el.appendChild(createSymbol(Gameboard.getCurrentPlayer()));
   };
 
   const createSymbol = currentPlayer => {
