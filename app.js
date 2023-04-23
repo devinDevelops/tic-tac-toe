@@ -62,12 +62,29 @@ const Gameboard = (function () {
       }
     };
 
+    const checkVerticalSquares = () => {
+      if (
+        (gbArr[0] === currentPlayer.symbol &&
+          gbArr[3] === currentPlayer.symbol &&
+          gbArr[6] === currentPlayer.symbol) ||
+        (gbArr[1] === currentPlayer.symbol &&
+          gbArr[4] === currentPlayer.symbol &&
+          gbArr[7] === currentPlayer.symbol) ||
+        (gbArr[2] === currentPlayer.symbol &&
+          gbArr[5] === currentPlayer.symbol &&
+          gbArr[8] === currentPlayer.symbol)
+      ) {
+        console.log(`vertical currentPlayerWins`);
+      }
+    };
+
     // const horizontalSquares = null;
     // console.log(`horiSqs: ${horizontalSquares}`);
     // const verticalSquares = null;
     // console.log(`vertSqs: ${verticalSquares});
     checkDiagonalSquares();
     checkHorizontalSquares();
+    checkVerticalSquares();
     // console.log(gbArr);
   };
 
