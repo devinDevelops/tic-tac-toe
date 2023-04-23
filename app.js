@@ -33,7 +33,7 @@ const Gameboard = (function () {
   };
 
   const checkForWinner = currentPlayer => {
-    const checkDiaginalSquares = () => {
+    const checkDiagonalSquares = () => {
       if (
         (gbArr[0] === currentPlayer.symbol &&
           gbArr[4] === currentPlayer.symbol &&
@@ -42,7 +42,23 @@ const Gameboard = (function () {
           gbArr[4] === currentPlayer.symbol &&
           gbArr[6] === currentPlayer.symbol)
       ) {
-        console.log(`currentPlayerWins`);
+        console.log(`diagonal currentPlayerWins`);
+      }
+    };
+
+    const checkHorizontalSquares = () => {
+      if (
+        (gbArr[0] === currentPlayer.symbol &&
+          gbArr[1] === currentPlayer.symbol &&
+          gbArr[2] === currentPlayer.symbol) ||
+        (gbArr[3] === currentPlayer.symbol &&
+          gbArr[4] === currentPlayer.symbol &&
+          gbArr[5] === currentPlayer.symbol) ||
+        (gbArr[6] === currentPlayer.symbol &&
+          gbArr[7] === currentPlayer.symbol &&
+          gbArr[8] === currentPlayer.symbol)
+      ) {
+        console.log(`horizontal currentPlayerWins`);
       }
     };
 
@@ -50,7 +66,8 @@ const Gameboard = (function () {
     // console.log(`horiSqs: ${horizontalSquares}`);
     // const verticalSquares = null;
     // console.log(`vertSqs: ${verticalSquares});
-    checkDiaginalSquares();
+    checkDiagonalSquares();
+    checkHorizontalSquares();
     // console.log(gbArr);
   };
 
