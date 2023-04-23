@@ -2,7 +2,7 @@ const Gameboard = (function () {
   const player1 = CreatePlayer('player1', 'X', true);
   const player2 = CreatePlayer('player2', 'O', false);
 
-  let gbArr = [];
+  let gbArr = [null, null, null, null, null, null, null, null, null];
 
   function CreatePlayer(name, symbol, isCurrentPlayer) {
     return {
@@ -27,7 +27,10 @@ const Gameboard = (function () {
     return getCurrentPlayer();
   };
 
-  const updateGbArr = () => {};
+  const updateGbArr = el => {
+    const indexOfgbCellEvent = GameboardDisplay.gbCellElsArr.indexOf(el);
+    return (gbArr[indexOfgbCellEvent] = getCurrentPlayer().symbol);
+  };
 
   const checkForWinner = () => {
     const diaginalSquares = null;
@@ -38,7 +41,12 @@ const Gameboard = (function () {
     // console.log(`vertSqs: ${verticalSquares});
   };
 
-  return { getCurrentPlayer, changeCurrentPlayer, checkForWinner, updateGbArr };
+  return {
+    getCurrentPlayer,
+    changeCurrentPlayer,
+    checkForWinner,
+    updateGbArr,
+  };
 })();
 
 const GameboardDisplay = (function () {
@@ -50,9 +58,10 @@ const GameboardDisplay = (function () {
         'click',
         () => {
           appendSymbol(el);
+          Gameboard.updateGbArr(el);
           Gameboard.changeCurrentPlayer();
+
           // Gameboard.checkForWinner();
-          // Gameboard.updateGbArr();
         },
         {
           once: true,
