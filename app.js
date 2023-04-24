@@ -119,10 +119,12 @@ const GameboardDisplay = (function () {
           appendSymbol(el);
           Gameboard.updateGbArr(el, gbCellElsArr);
           if (Gameboard.checkForWinner(Gameboard.getCurrentPlayer())) {
-            setWinnerNameDisplay();
+            setWinnerNameDisplay(Gameboard.getCurrentPlayer());
+            changePlayAgainBTNColor(Gameboard.getCurrentPlayer());
             displayModal();
           }
           Gameboard.changeCurrentPlayer();
+          changeCurrentPlayerDisplay(Gameboard.getCurrentPlayer());
         },
         {
           once: true,
@@ -148,15 +150,35 @@ const GameboardDisplay = (function () {
     modal.classList.toggle('hidden');
   };
 
-  const setWinnerNameDisplay = () => {
+  const setWinnerNameDisplay = currentPlayer => {
     const capFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
     const winnerNameDisplay = document.querySelector('.modal h1>span');
-    const winnerName = Gameboard.getCurrentPlayer().name;
+    const winnerName = currentPlayer.name;
     winnerNameDisplay.textContent = capFirstLetter(winnerName);
     winnerNameDisplay.classList.add(`${winnerName}`);
   };
 
-  // const setCurrentPlayerDisplay = currentPlayer => {};
+  const changeCurrentPlayerDisplay = currentPlayer => {
+    const player1NameDisplay = document.querySelector(
+      '.player-names-container .player1'
+    );
+    const player2NameDisplay = document.querySelector(
+      '.player-names-container .player2'
+    );
+
+    if (currentPlayer.name === player1NameDisplay.textContent.toLowerCase()) {
+      player1NameDisplay.classList.add('highlight');
+      player2NameDisplay.classList.remove('highlight');
+    } else {
+      player1NameDisplay.classList.remove('highlight');
+      player2NameDisplay.classList.add('highlight');
+    }
+  };
+
+  const changePlayAgainBTNColor = currentPlayer => {
+    const playAgainBTN = document.querySelector('.play-again');
+    playAgainBTN.classList.add(`${currentPlayer.name}`);
+  };
 
   return { addListeners };
 })();

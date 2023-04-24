@@ -8,10 +8,14 @@
   <body>
     <div class="page-container">
       <header>
-        <h1>TIC-TAC-TOE</h1>
+        <h1>
+          <span class="player1 highlight">TIC</span>
+          - TAC -
+          <span class="player2 highlight">TOE</span>
+        </h1>
       </header>
       <div class="player-names-container">
-        <h1 class="player1">Player1</h1>
+        <h1 class="player1 highlight">Player1</h1>
         <h1 class="player2">Player2</h1>
       </div>
       <div class="gameboard-container">
@@ -29,7 +33,9 @@
       </div>
       <div class="modal-blur hidden">
         <div class="modal">
-          <h1><span class="highlight"></span> Wins!</h1>
+          <h1>
+            <span class="highlight"></span> <span class="outcome">Wins!</span>
+          </h1>
           <button class="play-again">Play Again</button>
         </div>
       </div>
