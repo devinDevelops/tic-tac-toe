@@ -43,16 +43,12 @@ header h1 {
   color: #fff;
 }
 
-.player1.current-turn {
-  text-decoration: underline;
-  text-decoration-color: var(--player1-color);
-  text-decoration-thickness: 4px;
+.player1.highlight {
+  color: var(--player1-color);
 }
 
-.player2.current-turn {
-  text-decoration: underline;
-  text-decoration-color: var(--player2-color);
-  text-decoration-thickness: 4px;
+.player2.highlight {
+  color: var(--player2-color);
 }
 
 .gameboard {
@@ -111,4 +107,46 @@ footer a:hover {
 
 footer a:active {
   color: #e04e4e;
+}
+
+.modal h1 {
+  color: #fff;
+}
+
+.modal {
+  background-color: #454545;
+  border-radius: 6px;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.modal-blur {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-again {
+  border: none;
+  border-radius: 2px;
+  padding: 12px 14px;
+  width: 60%;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }

@@ -42,8 +42,9 @@ const Gameboard = (function () {
           gbArr[4] === currentPlayer.symbol &&
           gbArr[6] === currentPlayer.symbol)
       ) {
-        console.log(`diagonal currentPlayerWins`);
+        return true;
       }
+      return false;
     };
 
     const checkHorizontalSquares = () => {
@@ -58,8 +59,9 @@ const Gameboard = (function () {
           gbArr[7] === currentPlayer.symbol &&
           gbArr[8] === currentPlayer.symbol)
       ) {
-        console.log(`horizontal currentPlayerWins`);
+        return true;
       }
+      return false;
     };
 
     const checkVerticalSquares = () => {
@@ -74,19 +76,28 @@ const Gameboard = (function () {
           gbArr[5] === currentPlayer.symbol &&
           gbArr[8] === currentPlayer.symbol)
       ) {
-        console.log(`vertical currentPlayerWins`);
+        return true;
       }
+      return false;
     };
 
-    // const horizontalSquares = null;
-    // console.log(`horiSqs: ${horizontalSquares}`);
-    // const verticalSquares = null;
-    // console.log(`vertSqs: ${verticalSquares});
-    checkDiagonalSquares();
-    checkHorizontalSquares();
-    checkVerticalSquares();
-    // console.log(gbArr);
+    // const checkForTie = () => {}
+
+    if (checkDiagonalSquares()) return true;
+
+    if (checkHorizontalSquares()) return true;
+
+    if (checkVerticalSquares()) return true;
+
+    return false;
   };
+
+  // const resetGameboard = () => {
+  //   gbArr.forEach(i => (i = null));
+  //   player1.isCurrentPlayer = true;
+  //   player2.isCurrentPlayer = false;
+  //   // hide modal
+  // };
 
   return {
     getCurrentPlayer,
@@ -107,7 +118,10 @@ const GameboardDisplay = (function () {
         () => {
           appendSymbol(el);
           Gameboard.updateGbArr(el, gbCellElsArr);
-          Gameboard.checkForWinner(Gameboard.getCurrentPlayer());
+          if (Gameboard.checkForWinner(Gameboard.getCurrentPlayer())) {
+            setWinnerNameDisplay();
+            displayModal();
+          }
           Gameboard.changeCurrentPlayer();
         },
         {
@@ -128,6 +142,21 @@ const GameboardDisplay = (function () {
     symbolEl.classList.add(currentPlayer.name);
     return symbolEl;
   };
+
+  const displayModal = () => {
+    const modal = document.querySelector('.modal-blur');
+    modal.classList.toggle('hidden');
+  };
+
+  const setWinnerNameDisplay = () => {
+    const capFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
+    const winnerNameDisplay = document.querySelector('.modal h1>span');
+    const winnerName = Gameboard.getCurrentPlayer().name;
+    winnerNameDisplay.textContent = capFirstLetter(winnerName);
+    winnerNameDisplay.classList.add(`${winnerName}`);
+  };
+
+  // const setCurrentPlayerDisplay = currentPlayer => {};
 
   return { addListeners };
 })();
