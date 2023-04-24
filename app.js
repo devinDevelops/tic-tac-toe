@@ -92,26 +92,28 @@ const Gameboard = (function () {
     return false;
   };
 
-  // const resetGameboard = () => {
-  //   gbArr.forEach(i => (i = null));
-  //   player1.isCurrentPlayer = true;
-  //   player2.isCurrentPlayer = false;
-  //   // hide modal
-  // };
+  const resetGameboard = () => {
+    gbArr = [null, null, null, null, null, null, null, null, null];
+    player1.isCurrentPlayer = true;
+    player2.isCurrentPlayer = false;
+  };
 
   return {
     getCurrentPlayer,
     changeCurrentPlayer,
     checkForWinner,
     updateGbArr,
+    resetGameboard,
   };
 })();
 
 const GameboardDisplay = (function () {
-  const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
-  const gbCellElsArr = [...gameboardCellEls];
+  const playAgainBTN = document.querySelector('.play-again');
 
-  const addListeners = () => {
+  const addCellListeners = () => {
+    const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
+    const gbCellElsArr = [...gameboardCellEls];
+
     gameboardCellEls.forEach(el => {
       return el.addEventListener(
         'click',
@@ -131,6 +133,13 @@ const GameboardDisplay = (function () {
         }
       );
     });
+  };
+
+  const addPlayAgainListeners = () => {
+    playAgainBTN.addEventListener('click', displayModal);
+    playAgainBTN.addEventListener('click', Gameboard.resetGameboard);
+    playAgainBTN.addEventListener('click', resetGameboardDisplay);
+    playAgainBTN.addEventListener('click', addCellListeners);
   };
 
   const appendSymbol = el => {
@@ -176,11 +185,26 @@ const GameboardDisplay = (function () {
   };
 
   const changePlayAgainBTNColor = currentPlayer => {
-    const playAgainBTN = document.querySelector('.play-again');
     playAgainBTN.classList.add(`${currentPlayer.name}`);
   };
 
-  return { addListeners };
+  const createGBCell = () => {
+    const gameboardEl = document.querySelector('.gameboard');
+    const gbCell = document.createElement('div');
+    gbCell.classList.add('gameboard-cell');
+    gameboardEl.appendChild(gbCell);
+  };
+
+  const resetGameboardDisplay = () => {
+    const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
+    gameboardCellEls.forEach(el => el.remove());
+    for (let i = 0; i < 9; i++) {
+      createGBCell();
+    }
+  };
+
+  return { addCellListeners, addPlayAgainListeners };
 })();
 
-GameboardDisplay.addListeners();
+GameboardDisplay.addCellListeners();
+GameboardDisplay.addPlayAgainListeners();
