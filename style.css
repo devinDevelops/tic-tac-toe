@@ -14,6 +14,51 @@ body {
   font-family: arial;
 }
 
+.starting-page {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: #343434;
+}
+
+.starting-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 25%;
+}
+
+.starting-page-container h1 {
+  font-size: 5rem;
+  color: #fff;
+}
+
+.start-game-btn {
+  border: none;
+  padding: 14px 24px;
+  border-radius: 4px;
+  font-size: 1.25rem;
+  margin-top: 20px;
+  font-weight: 700;
+  color: #fff;
+  background-color: #343434;
+  border: solid 2px #fff;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.start-game-btn:hover {
+  background-color: #fff;
+  padding: 16px 26px;
+  border: none;
+  color: #343434;
+}
+
+.start-game-btn:active {
+  background-color: #adadad;
+}
+
 .page-container {
   height: 100%;
   display: grid;

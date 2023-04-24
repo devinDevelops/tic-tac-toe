@@ -142,6 +142,11 @@ const GameboardDisplay = (function () {
     playAgainBTN.addEventListener('click', addCellListeners);
   };
 
+  const addStartGameListener = () => {
+    const startGameBTN = document.querySelector('.start-game-btn');
+    startGameBTN.addEventListener('click', removeStartGameScreen);
+  };
+
   const appendSymbol = el => {
     return el.appendChild(createSymbol(Gameboard.getCurrentPlayer()));
   };
@@ -157,6 +162,11 @@ const GameboardDisplay = (function () {
   const displayModal = () => {
     const modal = document.querySelector('.modal-blur');
     modal.classList.toggle('hidden');
+  };
+
+  const removeStartGameScreen = () => {
+    const startGamePageEl = document.querySelector('.starting-page');
+    startGamePageEl.classList.add('hidden');
   };
 
   const setWinnerNameDisplay = currentPlayer => {
@@ -203,8 +213,9 @@ const GameboardDisplay = (function () {
     }
   };
 
-  return { addCellListeners, addPlayAgainListeners };
+  return { addCellListeners, addPlayAgainListeners, addStartGameListener };
 })();
 
 GameboardDisplay.addCellListeners();
 GameboardDisplay.addPlayAgainListeners();
+GameboardDisplay.addStartGameListener();
