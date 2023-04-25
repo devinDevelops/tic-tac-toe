@@ -209,19 +209,6 @@ footer a:active {
   border: 2px solid var(--player2-color);
 }
 
-.play-again.player2 {
-  border: 2px solid var(--player2-color);
-}
-
-.play-again.player2:hover {
-  background-color: var(--player2-color);
-}
-
-.play-again.player2:active {
-  background-color: var(--player1-color);
-  border: 2px solid var(--player1-color);
-}
-
 .hidden {
   display: none;
 }

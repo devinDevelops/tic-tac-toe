@@ -81,13 +81,23 @@ const Gameboard = (function () {
       return false;
     };
 
-    // const checkForTie = () => {}
-
     if (checkDiagonalSquares()) return true;
 
     if (checkHorizontalSquares()) return true;
 
     if (checkVerticalSquares()) return true;
+
+    return false;
+  };
+
+  const checkForTie = () => {
+    const emptyGbArrSpots = gbArr.filter(i => i === null);
+    if (
+      emptyGbArrSpots.length === 0 &&
+      checkForWinner(getCurrentPlayer) === false
+    ) {
+      return true;
+    }
 
     return false;
   };
@@ -102,14 +112,13 @@ const Gameboard = (function () {
     getCurrentPlayer,
     changeCurrentPlayer,
     checkForWinner,
+    checkForTie,
     updateGbArr,
     resetGameboard,
   };
 })();
 
 const GameboardDisplay = (function () {
-  const playAgainBTN = document.querySelector('.play-again');
-
   const addCellListeners = () => {
     const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
     const gbCellElsArr = [...gameboardCellEls];
@@ -120,13 +129,17 @@ const GameboardDisplay = (function () {
         () => {
           appendSymbol(el);
           Gameboard.updateGbArr(el, gbCellElsArr);
+
           if (Gameboard.checkForWinner(Gameboard.getCurrentPlayer())) {
-            setWinnerNameDisplay(Gameboard.getCurrentPlayer());
-            changePlayAgainBTNColor(Gameboard.getCurrentPlayer());
+            setWinnerTextDisplay(Gameboard.getCurrentPlayer());
             displayModal();
+          } else if (Gameboard.checkForTie()) {
+            setTieTextDisplay();
+            displayModal();
+          } else {
+            Gameboard.changeCurrentPlayer();
+            changeCurrentPlayerDisplay(Gameboard.getCurrentPlayer());
           }
-          Gameboard.changeCurrentPlayer();
-          changeCurrentPlayerDisplay(Gameboard.getCurrentPlayer());
         },
         {
           once: true,
@@ -134,6 +147,8 @@ const GameboardDisplay = (function () {
       );
     });
   };
+
+  const playAgainBTN = document.querySelector('.play-again');
 
   const addPlayAgainListeners = () => {
     playAgainBTN.addEventListener('click', displayModal);
@@ -145,6 +160,11 @@ const GameboardDisplay = (function () {
   const addStartGameListener = () => {
     const startGameBTN = document.querySelector('.start-game-btn');
     startGameBTN.addEventListener('click', removeStartGameScreen);
+  };
+
+  const removeStartGameScreen = () => {
+    const startGamePageEl = document.querySelector('.starting-page');
+    startGamePageEl.classList.add('hidden');
   };
 
   const appendSymbol = el => {
@@ -164,17 +184,26 @@ const GameboardDisplay = (function () {
     modal.classList.toggle('hidden');
   };
 
-  const removeStartGameScreen = () => {
-    const startGamePageEl = document.querySelector('.starting-page');
-    startGamePageEl.classList.add('hidden');
+  const gameOutcomeTextEl = document.querySelector('.outcome');
+  const winnerNameDisplay = document.querySelector('.modal h1>span');
+
+  const setTieTextDisplay = () => {
+    removeWinnerTextDisplay();
+    gameOutcomeTextEl.textContent = 'This round is a tie!';
   };
 
-  const setWinnerNameDisplay = currentPlayer => {
+  const setWinnerTextDisplay = currentPlayer => {
     const capFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
-    const winnerNameDisplay = document.querySelector('.modal h1>span');
     const winnerName = currentPlayer.name;
     winnerNameDisplay.textContent = capFirstLetter(winnerName);
+    winnerNameDisplay.removeAttribute('class');
+    winnerNameDisplay.setAttribute('class', 'highlight');
     winnerNameDisplay.classList.add(`${winnerName}`);
+    gameOutcomeTextEl.textContent = 'Wins!';
+  };
+
+  const removeWinnerTextDisplay = () => {
+    winnerNameDisplay.textContent = '';
   };
 
   const changeCurrentPlayerDisplay = currentPlayer => {
@@ -194,10 +223,6 @@ const GameboardDisplay = (function () {
     }
   };
 
-  const changePlayAgainBTNColor = currentPlayer => {
-    playAgainBTN.classList.add(`${currentPlayer.name}`);
-  };
-
   const createGBCell = () => {
     const gameboardEl = document.querySelector('.gameboard');
     const gbCell = document.createElement('div');
@@ -207,10 +232,14 @@ const GameboardDisplay = (function () {
 
   const resetGameboardDisplay = () => {
     const gameboardCellEls = document.querySelectorAll('.gameboard-cell');
+
     gameboardCellEls.forEach(el => el.remove());
+
     for (let i = 0; i < 9; i++) {
       createGBCell();
     }
+
+    changeCurrentPlayerDisplay(Gameboard.getCurrentPlayer());
   };
 
   return { addCellListeners, addPlayAgainListeners, addStartGameListener };
